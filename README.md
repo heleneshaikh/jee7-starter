@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/kvanrobbroeck/jee7-starter.svg?branch=master)](https://travis-ci.org/kvanrobbroeck/jee7-starter)
+
 This project serves as a demo/template for JEE6 and JEE7 development.
 
 Demonstrates the following:

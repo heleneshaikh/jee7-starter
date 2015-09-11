@@ -17,7 +17,8 @@ public class PassengerRepository implements RemotePassengerRepository{
     @Override
     public List<Passenger> findAll() {
 
-        return em.createQuery("select p from Passenger p", Passenger.class).getResultList();
+        List<Passenger> passengers = em.createQuery("select p from Passenger p", Passenger.class).getResultList();
+        return passengers;
     }
 
     //public to remove
