@@ -2,6 +2,7 @@ package com.realdolmen.course.integration;
 
 import com.realdolmen.course.persistence.DataSetPersistenceTest;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -16,19 +17,19 @@ import static org.junit.Assume.assumeTrue;
 public abstract class RemoteIntegrationTest extends DataSetPersistenceTest {
     public static final String INTEGRATION_ENABLED_SYSTEM_PROPERTY = "integration";
 
-    private InitialContext context;
+    private static InitialContext context;
 
-    @Before
-    public void initializeJndiContext() throws Exception {
+    @BeforeClass
+    public static void initializeJndiContext() throws Exception {
         assumeTrue("Integration testing is disabled (enable using -Dintegration)", isPropertySet());
         context = new InitialContext(jdniProperties());
     }
 
-    private boolean isPropertySet() {
+    private static boolean isPropertySet() {
         return System.getProperty(INTEGRATION_ENABLED_SYSTEM_PROPERTY) != null;
     }
 
-    private Hashtable<String, Object> jdniProperties() {
+    private static Hashtable<String, Object> jdniProperties() {
         Hashtable<String, Object> properties = new Hashtable<>();
         properties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
         properties.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
