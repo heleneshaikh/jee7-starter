@@ -1,7 +1,8 @@
 package com.realdolmen.course.persistence;
 
-import org.h2.engine.Database;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,42 +28,16 @@ public abstract class PersistenceTest extends Assert {
     public static final String PASSWORD = "javax.persistence.jdbc.password";
 
     private static final Logger logger = LoggerFactory.getLogger(PersistenceTest.class);
-    public static final String DATABASE_ENGINE_SYSTEM_PARAMETER = "databaseEngine";
 
-    private static EntityManagerFactory entityManagerFactory;
+    private static final String PERSISTENCE_UNIT_NAME = "MyTestPersistenceUnit";
 
+    private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
     private EntityTransaction transaction;
 
-    @BeforeClass
-    public static void initializeEntityManagerFactory() {
-        logger.info("Creating EntityManagerFactory");
-        entityManagerFactory = Persistence.createEntityManagerFactory("MyTestPersistenceUnit", properties());
-    }
-
-    /**
-     * Provides connection settings for the database.
-     * @return Map of JPA properties.
-     */
-    protected static Map<String, String> properties() {
-        DatabaseEngine databaseEngine = databaseEngine();
-        HashMap<String, String> properties = new HashMap<>();
-        properties.put(DRIVER, databaseEngine.driverClass);
-        properties.put(URL, databaseEngine.url);
-        properties.put(USER, databaseEngine.username);
-        properties.put(PASSWORD, databaseEngine.password);
-        return Collections.unmodifiableMap(properties);
-    }
-
-    private static DatabaseEngine databaseEngine() {
-        String databaseEngine = System.getProperty(DATABASE_ENGINE_SYSTEM_PARAMETER);
-        DatabaseEngine engine = databaseEngine != null ? DatabaseEngine.valueOf(databaseEngine) : DatabaseEngine.mysql;
-        logger.info("Using database enigine: " + engine);
-        return engine;
-    }
-
     @Before
-    public void initialize() {
+    public void initialize() throws SQLException {
+        initializeEntityManagerFactory();
         logger.info("Creating transacted EntityManager");
         entityManager = entityManagerFactory.createEntityManager();
         transaction = entityManager.getTransaction();
@@ -71,6 +46,54 @@ public abstract class PersistenceTest extends Assert {
 
     @After
     public void destroy() {
+        completeTransaction();
+        destroyEntityManager();
+        destroyEntityManagerFactory();
+    }
+
+    private void initializeEntityManagerFactory() throws SQLException {
+        recreateSchema();
+        loadPersistenceUnit();
+    }
+
+    private void loadPersistenceUnit() {
+        logger.info("Creating EntityManagerFactory from persistence unit " + PERSISTENCE_UNIT_NAME);
+        entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME, properties());
+    }
+
+    private void recreateSchema() throws SQLException {
+        DatabaseEngine databaseEngine = DatabaseEngine.current();
+        if(!databaseEngine.isInMemory) {
+            logger.info("Recreating database schema '" + databaseEngine.schema + "'");
+            try (Connection connection = newConnection()) {
+                connection.createStatement().execute("drop schema " + databaseEngine.schema);
+                connection.createStatement().execute("create schema " + databaseEngine.schema);
+            }
+        }
+    }
+
+    /**
+     * Provides connection settings for the database. These settings will merge with the ones already in the test persistence.xml.
+     * Subclasses can override this to customize.
+     * @return Map of JPA properties.
+     */
+    protected Map<String, String> properties() {
+        DatabaseEngine databaseEngine = DatabaseEngine.current();
+        HashMap<String, String> properties = new HashMap<>();
+        properties.put(DRIVER, databaseEngine.driverClass);
+        properties.put(URL, databaseEngine.url);
+        properties.put(USER, databaseEngine.username);
+        properties.put(PASSWORD, databaseEngine.password);
+        return Collections.unmodifiableMap(properties);
+    }
+
+    private void destroyEntityManager() {
+        if(entityManager != null) {
+            entityManager.close();
+        }
+    }
+
+    private void completeTransaction() {
         logger.info("Committing and closing transacted EntityManager");
         if(transaction != null) {
             if(transaction.getRollbackOnly()) {
@@ -79,14 +102,9 @@ public abstract class PersistenceTest extends Assert {
                 transaction.commit();
             }
         }
-
-        if(entityManager != null) {
-            entityManager.close();
-        }
     }
 
-    @AfterClass
-    public static void destroyEntityManagerFactory() {
+    public void destroyEntityManagerFactory() {
         logger.info("Closing EntityManagerFactory");
         if(entityManagerFactory != null) {
             entityManagerFactory.close();
@@ -109,6 +127,4 @@ public abstract class PersistenceTest extends Assert {
         Map<String, String> properties = properties();
         return DriverManager.getConnection(properties.get(URL), properties.get(USER), properties.get(PASSWORD));
     }
-
-
 }
