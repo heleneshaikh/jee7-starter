@@ -9,7 +9,7 @@ import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
 @MessageDriven(activationConfig = {
-        @ActivationConfigProperty(propertyName = "destination", propertyValue = "java:jboss/exported/jms/queue/MyQueue"),
+        @ActivationConfigProperty(propertyName = "destination", propertyValue = "java:jboss/exported/rd/queues/RealDolmenQueue"),
 })
 public class TextMessageConsumer implements MessageListener {
     @Override

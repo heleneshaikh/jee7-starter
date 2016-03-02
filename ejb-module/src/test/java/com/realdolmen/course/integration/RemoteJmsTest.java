@@ -15,8 +15,8 @@ public abstract class RemoteJmsTest extends RemoteIntegrationTest {
     @Before
     public void initializeJms() throws Exception {
         connectionFactory = lookup("jms/RemoteConnectionFactory");
-        queue = lookup("jms/queue/MyQueue");
-        connection = connectionFactory.createConnection("root", "root");
+        queue = lookup("rd/queues/RealDolmenQueue");
+        connection = connectionFactory.createConnection("administrator", "Azerty123!");
         session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         producer = session.createProducer(queue);
     }
