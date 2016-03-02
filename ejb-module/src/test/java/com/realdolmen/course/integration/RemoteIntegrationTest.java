@@ -1,6 +1,7 @@
 package com.realdolmen.course.integration;
 
 import com.realdolmen.course.persistence.DataSetPersistenceTest;
+import com.realdolmen.course.persistence.DatabaseEngine;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -23,6 +24,14 @@ public abstract class RemoteIntegrationTest extends DataSetPersistenceTest {
     public static void initializeJndiContext() throws Exception {
         assumeTrue("Integration testing is disabled (enable using -Dintegration)", isPropertySet());
         context = new InitialContext(jdniProperties());
+    }
+
+    /**
+     * Integration tests invoke RMI calls on an actual running server. Since they assert database state, this means they need to run on the same datasource as the server does, which currently is mysql.
+     */
+    @Before
+    public void verifyCorrectDatabaseEngine() {
+        assertTrue("Integration testing should be run on " + DatabaseEngine.mysql + " database engine (in current implementation)", DatabaseEngine.current() == DatabaseEngine.mysql);
     }
 
     private static boolean isPropertySet() {

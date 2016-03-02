@@ -23,9 +23,23 @@ Demonstrated features
 
 Platform
 --------
-Verified for use on Wildfly 9.0.1.Final. Apply the "wildfly-9.0.1.Final-diff.zip" file over a clean wildfly 9.0.1 installation to set things up correctly.
+Verified for use on Wildfly 10.0.0.Final. Apply the "wildfly-10.0.0.Final-diff.zip" file over a clean wildfly 10.0.0 installation to set things up correctly.
+
+Handy features
+--------------
+    * Unit tests with either H2 or mysql (-DdatabaseEngine=h2)
+    * DBUnit data loading in data.xml
+    * Unit tests for remote EJB and JMS interaction enabled only when passing -Dintegration
+    * Support for Travis CI
 
 Prerequisistes
 --------------
-    * Maven
-    * MySQL server (schema "test")
+    * JDK 8
+    * Maven 3
+    * MySQL server (schema "realdolmen", username="root", password="")
+
+Resources provided by wildfly configuration
+-------------------------------------------
+    * JMS Queue (non-durable): java:jboss/exported/rd/queues/RealDolmenQueue
+    * JTA Datasource java:/rd/queues/RealDolmenDataSource (jdbc:mysql://localhost:3306/realdolmen user: root password: (blank)
+    * Administrator user for management and application user: administrator/Azerty123! (used for admin console, and JMS session authentication)

@@ -6,7 +6,7 @@
         version="2.1">
 
     <persistence-unit name="MyPersistenceUnit" transaction-type="JTA">
-        <jta-data-source>java:/MyDataSource</jta-data-source>
+        <jta-data-source>java:/rd/datasources/RealDolmenDataSource</jta-data-source>
     </persistence-unit>
 
 </persistence>
