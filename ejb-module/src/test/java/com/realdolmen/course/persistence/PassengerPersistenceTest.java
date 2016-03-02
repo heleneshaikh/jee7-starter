@@ -8,6 +8,10 @@ import org.junit.rules.ExpectedException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by SDOAX36 on 9/09/2015.
@@ -95,8 +99,12 @@ public class PassengerPersistenceTest extends DataSetPersistenceTest {
     }
     @Test
     public void passengerAgeCanBeCalculated() throws Exception{
-        Passenger p = new Passenger("122313213","jan","De Boel",11,"15/02/1990", PassengerType.ECONOMY,new Adress("Sesamstraat", "", "Sprookjesbos", "99955", "Holland"));
-        assertEquals(25, p.getAge());
+        LocalDate birthDate = LocalDate.of(1990, Month.FEBRUARY, 15);
+        Passenger p = new Passenger("122313213","jan","De Boel",11,birthDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), PassengerType.ECONOMY,new Adress("Sesamstraat", "", "Sprookjesbos", "99955", "Holland"));
+
+        LocalDate now = LocalDate.now();
+        int age = Period.between(birthDate, now).getYears();
+        assertEquals(age, p.getAge());
     }
     @Test
     public void refreshPassengerData() throws Exception{
