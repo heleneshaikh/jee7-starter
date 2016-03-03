@@ -9,11 +9,11 @@
     <parent>
         <groupId>com.realdolmen</groupId>
         <artifactId>jee7-starter</artifactId>
-        <version>1.1</version>
+        <version>1.2</version>
     </parent>
 
     <artifactId>ear-module</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>ear</packaging>
 
     <dependencies>
