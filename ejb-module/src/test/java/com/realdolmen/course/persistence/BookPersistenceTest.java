@@ -15,7 +15,7 @@ public class BookPersistenceTest extends DataSetPersistenceTest {
     @Test
     public void bookCanBePersisted() throws Exception {
         Book book = new Book("Animal Farm", "George Orwell", Book.Genre.thriller);
-        entityManager().persist(book);
+        entityManager().persist(book); //Direct met EM werken
         assertNotNull(book.getId());
     }
 

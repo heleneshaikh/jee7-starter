@@ -1,4 +1,4 @@
-JEE7 Starter
+Helene Starter
 ============
 
 [![Build Status](https://travis-ci.org/kvanrobbroeck/jee7-starter.svg?branch=master)](https://travis-ci.org/kvanrobbroeck/jee7-starter)

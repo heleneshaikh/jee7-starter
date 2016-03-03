@@ -32,7 +32,7 @@ public abstract class PersistenceTest extends Assert {
     private static final String PERSISTENCE_UNIT_NAME = "MyTestPersistenceUnit";
 
     private EntityManagerFactory entityManagerFactory;
-    private EntityManager entityManager;
+    private EntityManager entityManager; //ge kunt u entitites as is gebruiken
     private EntityTransaction transaction;
 
     @Before
