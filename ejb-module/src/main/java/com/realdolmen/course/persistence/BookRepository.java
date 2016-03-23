@@ -18,7 +18,13 @@ public class BookRepository implements RemoteBookRepository {
         return entityManager.createQuery("select b from Book b", Book.class).getResultList(); //not an error, jpql plugin download
     }
 
+    public Book findById(Integer id) {
+        return entityManager.find(Book.class, id);
+    }
+
     public void remove(int id) {
         entityManager.remove(entityManager.getReference(Book.class, id));
     }
+
+
 }

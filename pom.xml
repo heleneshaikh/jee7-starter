@@ -35,7 +35,7 @@
 			<artifactId>jboss-javaee-7.0</artifactId>
 			<version>1.0.3.Final</version>
 			<type>pom</type>
-			<scope>provided</scope>
+			<scope>provided</scope> <!-- provided by server -->
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -73,11 +73,11 @@
 			<version>5.0.7.Final</version> <!-- Version used by Wildfly 10.0.0.Final -->
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.2.3.Final</version> <!-- Version used by Wildfly 10.0.0.Final -->
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>

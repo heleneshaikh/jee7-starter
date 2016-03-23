@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:head>
+    <meta charset="UTF-8"/>
+    <title>Books</title>
+    <style>
+        .cool {
+            background-color: blue;
+            font-style: italic;
+            font-family: "Comic Sans MS";
+        }
+
+        .test {
+            background-color: green;
+        }
+
+    </style>
+</h:head>
+
+<h:body>
+    <h1 class="test">Welcome</h1>
+    <h:outputText value="Output #{5*8}" styleClass="cool" style="text-shadow: 10px 10px 10px aqua"/>
+    <p>5 * 8 is #{5 * 8} </p>
+    <p>test</p>
+    <p> #{registrationBean.firstName}</p>
+    <p> #{registrationBean.lastName}</p>
+    <p> #{registrationBean.dateOfBirth}</p>
+    <p> #{registrationBean.elements[0]}</p>
+    <h:form>
+        <h:inputText value="#{registrationBean.firstName}"/>
+        <h:commandButton value="Button label" action="books.xhtml"/>
+        <h:inputSecret value="secret"/>
+        <h:inputHidden value="hidden"/>
+        <h:inputTextarea value="text area"/>
+        <h:selectOneListbox value="#{registrationBean.gender}">
+            <f:selectItem itemLabel="vrouw" itemValue="female"/>
+            <f:selectItem itemLabel="man" itemValue="male"/>
+        </h:selectOneListbox>
+    </h:form>
+
+
+</h:body>
+
+</html>

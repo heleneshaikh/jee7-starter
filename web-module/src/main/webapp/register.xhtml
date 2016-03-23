@@ -1,0 +1,117 @@
+
+<!--
+  Created by IntelliJ IDEA.
+  User: heleneshaikh
+  Date: 05/03/16
+  Time: 17:12
+-->
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Title</title>
+</h:head>
+
+<h:body>
+    <h1>JSF Registration App</h1>
+    <h2>Registration Form</h2>
+    <h:form>
+        <div>
+        <h:outputLabel value="first name:" id="FirstName" for="FirstNameInput"/>
+        <h:inputText value="#{registrationBean.firstName}" id="FirstNameInput"/>
+        </div>
+        <div>
+        <h:outputLabel value="last name:" id="LastName" for="LastNameInput"/>
+        <h:inputText value="#{registrationBean.lastName}" id="LastNameInput"/>
+        </div>
+        <div>
+            Gender:
+        <h:selectOneRadio value="#{registrationBean.gender}">
+            <f:selectItem itemLabel="male" itemValue="male"/>
+            <f:selectItem itemLabel="female" itemValue="female"/>
+        </h:selectOneRadio>
+        </div>
+        <!--
+           <div>
+               <h:outputLabel value="Date of Birth:" id="DateBirth" for="BirthInput"/>
+               <h:inputText value="#{registrationBean.dateOfBirth}" id="BirthInput"/>
+           </div>
+           -->
+        <div>
+            <h:outputText value="date: #{registrationBean.dateOfBirth}">
+                <f:convertDateTime pattern="MM-dd-yyyy" type="date"/>
+            </h:outputText>
+        </div>
+        <!-- why is date not converted to format? -->
+        <div>
+            <h:inputText id="urlInput" value="#{registrationBean.url}" label="URL" >
+                <f:converter converterId="URLconversion" />
+            </h:inputText>
+        </div>
+       <div>
+           <h:selectOneRadio value="#{registrationBean.serviceLevel}"/>
+           <f:selectItem itemLabel="basic" itemValue="basic"/>
+           <f:selectItem itemLabel="medium" itemValue="medium"/>
+           <f:selectItem itemLabel="high" itemValue="high"/>
+       </div>
+       <div>
+           <h:outputLabel value="phone number: " id="PhoneNumber" for="PhoneInput"/>
+           <h:inputText value="#{registrationBean.phoneNumber}" id="PhoneInput" required="true">
+                <f:validateLength minimum="5" maximum="8" />
+           </h:inputText>
+       </div>
+       <div>
+           <h:outputLabel value="Account number: " id="AccountNumber" for="AccountInput"/>
+           <h:inputText value="#{registrationBean.accountNumber}" id="AccountInput" required="true"/>
+           <!-- <f:validateLength minimum="5" maximum="8" -->
+       </div>
+        <div>
+            <h:commandButton value="register now" type="submit" action="#{registrationBean.register}"/>
+        </div>
+
+        <h:inputText value="#{registrationBean.email}" required="true" validator="#{registrationBean.validateEmail}" id="email">
+            <h:message for="email"/>
+        </h:inputText>
+        <!-- class validator:
+        <h:inputText value="#{registrationBean.email}" required="true" validator="emailValidator" id="email"/> -->
+    </h:form>
+    <div>
+        <c:forEach items="#{registrationBean.elements}" var="item">
+            <h:outputText value="#{item}"/>
+        </c:forEach>
+    </div>
+    <div>
+        <h:outputText value="panel grid"/>
+        <h:panelGrid columns="2">
+            <h:outputText value="first name: "/>
+            <h:panelGroup>
+                <h:outputLabel value="" id="FirstNames" for="firstNameInput"/>
+                <h:inputText value="#{registrationBean.firstName}" id="firstNameInput"/>
+            </h:panelGroup>
+            <h:outputText value="last name: "/>
+            <h:panelGroup>
+                <h:outputLabel value="" id="LastNames" for="lastNameInput"/>
+                <h:inputText value="#{registrationBean.lastName}" id="lastNameInput"/>
+            </h:panelGroup>
+        </h:panelGrid>
+    </div>
+    <div>
+        <h:outputText value="data table"/>
+        <h:dataTable id="table1" value="#{registrationBean.elements}" var="registeredPerson">
+            <h:column id="colomn1">
+                <h:outputText id="column1text" value="#{registeredPerson}"/>
+            </h:column>
+        </h:dataTable>
+    </div>
+<footer>
+    <ui:include src="footer.xhtml"/>
+</footer>
+
+</h:body>
+
+</html>

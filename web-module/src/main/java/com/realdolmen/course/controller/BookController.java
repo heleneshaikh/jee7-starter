@@ -9,7 +9,7 @@ import javax.inject.Named;
 import java.util.List;
 
 @Named
-@RequestScoped
+@RequestScoped //for the duration of a single request
 public class BookController {
     @Inject
     BookRepository repository;
@@ -20,5 +20,9 @@ public class BookController {
 
     public void remove(int bookId) {
         repository.remove(bookId);
+    }
+
+    public Book findById(Integer id) {
+        return repository.findById(id);
     }
 }
